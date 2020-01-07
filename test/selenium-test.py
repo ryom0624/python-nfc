@@ -2,10 +2,10 @@
 # from nfc.clf import RemoteTarget
 
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 from selenium.webdriver.chrome.options import Options
 
@@ -14,9 +14,10 @@ from selenium.webdriver.chrome.options import Options
 
 chromeOptions = Options()
 chromeOptions.add_argument("--kiosk")
+chromeOptions.add_experimental_option("excludeSwitches", ['enable-automation'])
 driver = webdriver.Chrome(options=chromeOptions)
 driver.get("file:///Users/two_0002/Desktop/two_brands_film.mp4")
-sleep(20)
+sleep(10)
 driver.close()
 
 

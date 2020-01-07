@@ -1,20 +1,12 @@
 import nfc
 from nfc.clf import RemoteTarget
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
-# from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
-# from selenium.webdriver.common.by import By
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
-# from time import sleep
-# from selenium.webdriver.chrome.options import Options
-
-
-print ("Please Touch")
-
-# chromeOptions = Options()
-# chromeOptions.add_argument("--kiosk")
-# driver = webdriver.Chrome(options=chromeOptions)
+# print("Please Touch")
+chromeOptions = Options()
+chromeOptions.add_argument("--kiosk")
+chromeOptions.add_experimental_option("excludeSwitches", ['enable-automation'])
 
 while True:
 
@@ -23,14 +15,38 @@ while True:
         target = clf.sense(RemoteTarget('106A'), RemoteTarget('106B'), RemoteTarget('212F'))
 
         while target:
-
-            tag = nfc.tag.activate(clf,target)
-            # driver.get(tag.ndef.records[0].uri)
+            tag = nfc.tag.activate(clf, target)
 
             try:
-                print(tag.ndef.records[0].uri)
-            except:
-                print('Released')
-                # driver.close()
+                # print(tag.ndef.records[0].uri)
 
+                try:
+                    driver.current_url
+                    # print("driver開いてますのでなにもしません。")
+                    break
+                except:
+                    # print("driverないのでchrome開きます")
+                    driver = webdriver.Chrome(options=chromeOptions)
+                    driver.get(tag.ndef.records[0].uri)
+                    while target:
+                        break
+            except:
+                # print('Released')
+                try:
+                    # print("driver closeします")
+                    driver.quit()
+                    driver = None
+                except:
+                    # print("driver立ち上がってないのでなにもしません。")
+                    pass
             break
+
+        else:
+            # print('Released')
+            try:
+                # print("driver closeします")
+                driver.quit()
+                driver = None
+            except:
+                # print("driver立ち上がってないのでなにもしません。")
+                pass
