@@ -3,11 +3,10 @@ from nfc.clf import RemoteTarget
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-# print("Please Touch")
+print("Please Touch")
 chromeOptions = Options()
 chromeOptions.add_argument("--kiosk")
 chromeOptions.add_experimental_option("excludeSwitches", ['enable-automation'])
-
 while True:
 
     with nfc.ContactlessFrontend('usb') as clf:
@@ -18,35 +17,34 @@ while True:
             tag = nfc.tag.activate(clf, target)
 
             try:
-                # print(tag.ndef.records[0].uri)
+                print(tag.ndef.records[0].uri)
 
                 try:
                     driver.current_url
-                    # print("driver開いてますのでなにもしません。")
+                    print("driver開いてますのでなにもしません。")
                     break
                 except:
-                    # print("driverないのでchrome開きます")
+                    print("driverないのでchrome開きます")
                     driver = webdriver.Chrome(options=chromeOptions)
                     driver.get(tag.ndef.records[0].uri)
-                    while target:
-                        break
+                    break
             except:
-                # print('Released')
+                print('Released')
                 try:
-                    # print("driver closeします")
+                    print("driver closeします")
                     driver.quit()
                     driver = None
                 except:
-                    # print("driver立ち上がってないのでなにもしません。")
+                    print("driver立ち上がってないのでなにもしません。")
                     pass
             break
 
         else:
-            # print('Released')
+            print('Released')
             try:
-                # print("driver closeします")
+                print("driver closeします")
                 driver.quit()
                 driver = None
             except:
-                # print("driver立ち上がってないのでなにもしません。")
+                print("driver立ち上がってないのでなにもしません。")
                 pass
